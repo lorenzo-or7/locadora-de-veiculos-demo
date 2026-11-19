@@ -1,0 +1,223 @@
+@import '@fontsource-variable/sora/wght.css';
+@import '@fontsource-variable/dm-sans/wght.css';
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ------------------------------------------------------------------ */
+/* Tokens — VÉLOR Mobility Studio                                      */
+/* ------------------------------------------------------------------ */
+:root,
+[data-theme='dark'] {
+  --bg: #0b0d10;
+  --surface: #14171b;
+  --elevated: #20252b;
+  --text: #f4f4f0;
+  --text-2: #a9b0b8;
+  --accent: #c5f277;
+  --accent-ink: #c5f277; /* acento usado como texto */
+  --on-accent: #0b0d10;
+  --border: #30363d;
+  --scrim: 11 13 16;
+  --danger: #ff8a7a;
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #f5f5f1;
+  --surface: #ffffff;
+  --elevated: #e9ece8;
+  --text: #171b1f;
+  --text-2: #606a73;
+  --accent: #547c21;
+  --accent-ink: #4a6e1d; /* AA sobre bg e surface */
+  --on-accent: #ffffff;
+  --border: #d9deda;
+  --scrim: 23 27 31;
+  --danger: #b4321f;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-fg: var(--text);
+  --color-fg-2: var(--text-2);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-line: var(--border);
+  --color-danger: var(--danger);
+  --color-ink: #0b0d10;
+  --color-paper: #f4f4f0;
+  --color-lime: #c5f277;
+
+  --font-display: 'Sora Variable', 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'DM Sans Variable', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --breakpoint-xs: 26rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  /* Em superfícies fotográficas o foco precisa ser claro em ambos os temas */
+  .on-photo :focus-visible {
+    outline-color: #c5f277;
+  }
+  input,
+  select,
+  button,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  [data-theme='dark'] input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-x {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-x {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .field {
+    display: flex;
+    width: 100%;
+    min-height: 3rem;
+    align-items: center;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 0 0.875rem;
+    font-size: 0.975rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+  }
+  .field:hover {
+    border-color: color-mix(in srgb, var(--text) 30%, var(--border));
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  .field[aria-invalid='true'] {
+    border-color: var(--danger);
+  }
+  select.field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23889099' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.25rem;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      100deg,
+      var(--elevated) 30%,
+      color-mix(in srgb, var(--elevated) 60%, var(--surface)) 50%,
+      var(--elevated) 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 80% at 70% 100%, transparent 40%, rgb(0 0 0 / 0.55) 100%);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(220%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
